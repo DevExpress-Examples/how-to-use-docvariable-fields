@@ -1,5 +1,7 @@
-﻿Namespace DocumentVariablesExample
-    Partial Public Class Form1
+Namespace DocumentVariablesExample
+
+    Partial Class Form1
+
         ''' <summary>
         ''' Required designer variable.
         ''' </summary>
@@ -10,14 +12,14 @@
         ''' </summary>
         ''' <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-            If disposing AndAlso (components IsNot Nothing) Then
-                components.Dispose()
+            If disposing AndAlso (Me.components IsNot Nothing) Then
+                Me.components.Dispose()
             End If
+
             MyBase.Dispose(disposing)
         End Sub
 
-        #Region "Windows Form Designer generated code"
-
+#Region "Windows Form Designer generated code"
         ''' <summary>
         ''' Required method for Designer support - do not modify
         ''' the contents of this method with the code editor.
@@ -37,12 +39,12 @@
             Me.btn_ShowCodes = New DevExpress.XtraEditors.CheckButton()
             Me.btnMailMerge = New DevExpress.XtraEditors.SimpleButton()
             Me.defaultLookAndFeel1 = New DevExpress.LookAndFeel.DefaultLookAndFeel(Me.components)
-            CType(Me.progressBarControl1.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.xtraTabControl1, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType((Me.progressBarControl1.Properties), System.ComponentModel.ISupportInitialize).BeginInit()
+            CType((Me.xtraTabControl1), System.ComponentModel.ISupportInitialize).BeginInit()
             Me.xtraTabControl1.SuspendLayout()
             Me.xtraTabPage1.SuspendLayout()
             Me.xtraTabPage2.SuspendLayout()
-            CType(Me.panelControl1, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType((Me.panelControl1), System.ComponentModel.ISupportInitialize).BeginInit()
             Me.panelControl1.SuspendLayout()
             Me.SuspendLayout()
             ' 
@@ -62,7 +64,8 @@
             Me.xtraTabControl1.SelectedTabPage = Me.xtraTabPage1
             Me.xtraTabControl1.Size = New System.Drawing.Size(784, 602)
             Me.xtraTabControl1.TabIndex = 2
-            Me.xtraTabControl1.TabPages.AddRange(New DevExpress.XtraTab.XtraTabPage() { Me.xtraTabPage1, Me.xtraTabPage2})
+            Me.xtraTabControl1.TabPages.AddRange(New DevExpress.XtraTab.XtraTabPage() {Me.xtraTabPage1, Me.xtraTabPage2})
+            AddHandler Me.xtraTabControl1.Selected, New DevExpress.XtraTab.TabPageEventHandler(AddressOf Me.xtraTabControl1_Selected)
             ' 
             ' xtraTabPage1
             ' 
@@ -81,6 +84,11 @@
             Me.richEditControl1.Size = New System.Drawing.Size(782, 577)
             Me.richEditControl1.TabIndex = 0
             Me.richEditControl1.Text = "richEditControl1"
+            AddHandler Me.richEditControl1.CalculateDocumentVariable, New DevExpress.XtraRichEdit.CalculateDocumentVariableEventHandler(AddressOf Me.eventHandler_CalculateDocumentVariable)
+            AddHandler Me.richEditControl1.MailMergeStarted, New DevExpress.XtraRichEdit.MailMergeStartedEventHandler(AddressOf Me.richEditControl1_MailMergeStarted)
+            AddHandler Me.richEditControl1.MailMergeRecordStarted, New DevExpress.XtraRichEdit.MailMergeRecordStartedEventHandler(AddressOf Me.richEditControl1_MailMergeRecordStarted)
+            AddHandler Me.richEditControl1.MailMergeRecordFinished, New DevExpress.XtraRichEdit.MailMergeRecordFinishedEventHandler(AddressOf Me.richEditControl1_MailMergeRecordFinished)
+            AddHandler Me.richEditControl1.MailMergeFinished, New DevExpress.XtraRichEdit.MailMergeFinishedEventHandler(AddressOf Me.richEditControl1_MailMergeFinished)
             ' 
             ' xtraTabPage2
             ' 
@@ -118,7 +126,7 @@
             Me.labelControl1.Name = "labelControl1"
             Me.labelControl1.Size = New System.Drawing.Size(390, 67)
             Me.labelControl1.TabIndex = 6
-            Me.labelControl1.Text = "1. Click Mail Merge " & ControlChars.CrLf & "2. Click Show Field Codes" & ControlChars.CrLf & "3. Modify DOCVARIABLE field - re" & "move the DO NOT CHANGE text" & ControlChars.CrLf & "4. Click Update Locked DOCVARIABLE Fields" & ControlChars.CrLf
+            Me.labelControl1.Text = "1. Click Mail Merge " & Global.Microsoft.VisualBasic.Constants.vbCrLf & "2. Click Show Field Codes" & Global.Microsoft.VisualBasic.Constants.vbCrLf & "3. Modify DOCVARIABLE field - re" & "move the DO NOT CHANGE text" & Global.Microsoft.VisualBasic.Constants.vbCrLf & "4. Click Update Locked DOCVARIABLE Fields" & Global.Microsoft.VisualBasic.Constants.vbCrLf
             ' 
             ' btnUpdateDocVariableFields
             ' 
@@ -128,6 +136,7 @@
             Me.btnUpdateDocVariableFields.Size = New System.Drawing.Size(190, 23)
             Me.btnUpdateDocVariableFields.TabIndex = 5
             Me.btnUpdateDocVariableFields.Text = "Update Locked DOCVARIABLE Fields"
+            AddHandler Me.btnUpdateDocVariableFields.Click, New System.EventHandler(AddressOf Me.btnUpdateDocVariableFields_Click)
             ' 
             ' btn_ShowHiddenText
             ' 
@@ -136,6 +145,7 @@
             Me.btn_ShowHiddenText.Size = New System.Drawing.Size(104, 23)
             Me.btn_ShowHiddenText.TabIndex = 4
             Me.btn_ShowHiddenText.Text = "Show Hidden Text"
+            AddHandler Me.btn_ShowHiddenText.CheckedChanged, New System.EventHandler(AddressOf Me.btn_ShowHiddenText_CheckedChanged)
             ' 
             ' btn_ShowCodes
             ' 
@@ -144,6 +154,7 @@
             Me.btn_ShowCodes.Size = New System.Drawing.Size(95, 23)
             Me.btn_ShowCodes.TabIndex = 3
             Me.btn_ShowCodes.Text = "Show Field Codes"
+            AddHandler Me.btn_ShowCodes.CheckedChanged, New System.EventHandler(AddressOf Me.btn_ShowCodes_Click)
             ' 
             ' btnMailMerge
             ' 
@@ -152,6 +163,7 @@
             Me.btnMailMerge.Size = New System.Drawing.Size(111, 23)
             Me.btnMailMerge.TabIndex = 0
             Me.btnMailMerge.Text = "Mail Merge"
+            AddHandler Me.btnMailMerge.Click, New System.EventHandler(AddressOf Me.btnMailMerge_Click)
             ' 
             ' defaultLookAndFeel1
             ' 
@@ -167,32 +179,41 @@
             Me.Controls.Add(Me.panelControl1)
             Me.Name = "Form1"
             Me.Text = "Form1"
-            CType(Me.progressBarControl1.Properties, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.xtraTabControl1, System.ComponentModel.ISupportInitialize).EndInit()
+            CType((Me.progressBarControl1.Properties), System.ComponentModel.ISupportInitialize).EndInit()
+            CType((Me.xtraTabControl1), System.ComponentModel.ISupportInitialize).EndInit()
             Me.xtraTabControl1.ResumeLayout(False)
             Me.xtraTabPage1.ResumeLayout(False)
             Me.xtraTabPage2.ResumeLayout(False)
-            CType(Me.panelControl1, System.ComponentModel.ISupportInitialize).EndInit()
+            CType((Me.panelControl1), System.ComponentModel.ISupportInitialize).EndInit()
             Me.panelControl1.ResumeLayout(False)
             Me.ResumeLayout(False)
-
         End Sub
 
-        #End Region
-
+#End Region
         Private progressBarControl1 As DevExpress.XtraEditors.ProgressBarControl
-        Private WithEvents xtraTabControl1 As DevExpress.XtraTab.XtraTabControl
+
+        Private xtraTabControl1 As DevExpress.XtraTab.XtraTabControl
+
         Private xtraTabPage1 As DevExpress.XtraTab.XtraTabPage
+
         Private xtraTabPage2 As DevExpress.XtraTab.XtraTabPage
-        Private WithEvents richEditControl1 As DevExpress.XtraRichEdit.RichEditControl
+
+        Private richEditControl1 As DevExpress.XtraRichEdit.RichEditControl
+
         Private richEditControl2 As DevExpress.XtraRichEdit.RichEditControl
+
         Private panelControl1 As DevExpress.XtraEditors.PanelControl
-        Private WithEvents btnMailMerge As DevExpress.XtraEditors.SimpleButton
-        Private WithEvents btn_ShowHiddenText As DevExpress.XtraEditors.CheckButton
-        Private WithEvents btn_ShowCodes As DevExpress.XtraEditors.CheckButton
-        Private WithEvents btnUpdateDocVariableFields As DevExpress.XtraEditors.SimpleButton
+
+        Private btnMailMerge As DevExpress.XtraEditors.SimpleButton
+
+        Private btn_ShowHiddenText As DevExpress.XtraEditors.CheckButton
+
+        Private btn_ShowCodes As DevExpress.XtraEditors.CheckButton
+
+        Private btnUpdateDocVariableFields As DevExpress.XtraEditors.SimpleButton
+
         Private defaultLookAndFeel1 As DevExpress.LookAndFeel.DefaultLookAndFeel
+
         Private labelControl1 As DevExpress.XtraEditors.LabelControl
     End Class
 End Namespace
-

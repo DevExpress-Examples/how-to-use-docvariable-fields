@@ -1,14 +1,15 @@
-﻿Imports System
+Imports System
 Imports System.Drawing
 Imports System.Windows.Forms
 #Region "#usings"
 Imports DevExpress.XtraRichEdit
 Imports DevExpress.XtraRichEdit.API.Native
 Imports DevExpress.Services
-#End Region ' #usings
 
+#End Region  ' #usings
 Namespace DocumentVariablesExample
-    Partial Public Class Form1
+
+    Public Partial Class Form1
         Inherits DevExpress.XtraEditors.XtraForm
 
         Private richEdit As RichEditControl
@@ -16,120 +17,118 @@ Namespace DocumentVariablesExample
         Public Sub New()
             InitializeComponent()
             richEditControl1.LoadDocument("Docs\invitation.docx")
-
             LockFields()
-
             richEditControl1.Options.MailMerge.DataSource = New SampleData()
-            AddHandler richEditControl2.Document.CalculateDocumentVariable, AddressOf eventHandler_CalculateDocumentVariable
-            Me.richEdit = richEditControl1
-
+            AddHandler richEditControl2.Document.CalculateDocumentVariable, New CalculateDocumentVariableEventHandler(AddressOf eventHandler_CalculateDocumentVariable)
+            richEdit = richEditControl1
             xtraTabControl1.SelectedTabPageIndex = 0
         End Sub
 
         Private Sub LockFields()
-'            #Region "#lockfields"
+#Region "#lockfields"
             richEditControl1.Document.Fields(0).Locked = True
             richEditControl2.Options.Fields.UpdateLockedFields = UpdateLockedFields.Never
-'            #End Region ' #lockfields
+#End Region  ' #lockfields
         End Sub
 
-        Private Sub btnMailMerge_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMailMerge.Click
+        Private Sub btnMailMerge_Click(ByVal sender As Object, ByVal e As EventArgs)
             Dim myMergeOptions As MailMergeOptions = richEditControl1.Document.CreateMailMergeOptions()
             myMergeOptions.MergeMode = MergeMode.NewSection
-            Me.Cursor = Cursors.WaitCursor
+            Cursor = Cursors.WaitCursor
             richEditControl1.Document.MailMerge(myMergeOptions, richEditControl2.Document)
-            Me.Cursor = Cursors.Default
+            Cursor = Cursors.Default
             xtraTabControl1.SelectedTabPageIndex = 1
         End Sub
-        #Region "#servicesubst"
-        Private Sub richEditControl1_MailMergeStarted(ByVal sender As Object, ByVal e As MailMergeStartedEventArgs) Handles richEditControl1.MailMergeStarted
-            richEditControl1.RemoveService(GetType(IProgressIndicationService))
-            richEditControl1.AddService(GetType(IProgressIndicationService), New MyProgressIndicatorService(richEditControl1, Me.progressBarControl1))
-        End Sub
-        #End Region ' #servicesubst
 
-        Private Sub richEditControl1_MailMergeFinished(ByVal sender As Object, ByVal e As MailMergeFinishedEventArgs) Handles richEditControl1.MailMergeFinished
+#Region "#servicesubst"
+        Private Sub richEditControl1_MailMergeStarted(ByVal sender As Object, ByVal e As MailMergeStartedEventArgs)
             richEditControl1.RemoveService(GetType(IProgressIndicationService))
+            richEditControl1.AddService(GetType(IProgressIndicationService), New MyProgressIndicatorService(richEditControl1, progressBarControl1))
         End Sub
 
-        #Region "#mailmergerecordstarted"
-        Private Sub richEditControl1_MailMergeRecordStarted(ByVal sender As Object, ByVal e As MailMergeRecordStartedEventArgs) Handles richEditControl1.MailMergeRecordStarted
-            Dim _range As DocumentRange = e.RecordDocument.InsertText(e.RecordDocument.Range.Start, String.Format("Created on {0:G}" & vbLf & vbLf, Date.Now))
+#End Region  ' #servicesubst
+        Private Sub richEditControl1_MailMergeFinished(ByVal sender As Object, ByVal e As MailMergeFinishedEventArgs)
+            richEditControl1.RemoveService(GetType(IProgressIndicationService))
+        End Sub
+
+#Region "#mailmergerecordstarted"
+        Private Sub richEditControl1_MailMergeRecordStarted(ByVal sender As Object, ByVal e As MailMergeRecordStartedEventArgs)
+            Dim _range As DocumentRange = e.RecordDocument.InsertText(e.RecordDocument.Range.Start, String.Format("Created on {0:G}" & Microsoft.VisualBasic.Constants.vbLf & Microsoft.VisualBasic.Constants.vbLf, Date.Now))
             Dim cp As CharacterProperties = e.RecordDocument.BeginUpdateCharacters(_range)
             cp.FontSize = 8
             cp.ForeColor = Color.Red
             cp.Hidden = True
             e.RecordDocument.EndUpdateCharacters(cp)
         End Sub
-        #End Region ' #mailmergerecordstarted
 
-        #Region "#mailmergerecordfinished"
-        Private Sub richEditControl1_MailMergeRecordFinished(ByVal sender As Object, ByVal e As MailMergeRecordFinishedEventArgs) Handles richEditControl1.MailMergeRecordFinished
+#End Region  ' #mailmergerecordstarted
+#Region "#mailmergerecordfinished"
+        Private Sub richEditControl1_MailMergeRecordFinished(ByVal sender As Object, ByVal e As MailMergeRecordFinishedEventArgs)
             e.RecordDocument.AppendDocumentContent("Docs\bungalow.docx", DocumentFormat.OpenXml)
         End Sub
-        #End Region ' #mailmergerecordfinished
 
-        #Region "#calculatedocumentvariable"
-        Private Sub eventHandler_CalculateDocumentVariable(ByVal sender As Object, ByVal e As CalculateDocumentVariableEventArgs) Handles richEditControl1.CalculateDocumentVariable
+#End Region  ' #mailmergerecordfinished
+#Region "#calculatedocumentvariable"
+        Private Sub eventHandler_CalculateDocumentVariable(ByVal sender As Object, ByVal e As CalculateDocumentVariableEventArgs)
             If e.Arguments.Count > 0 Then
                 Dim location As String = e.Arguments(0).Value.ToString()
-                If (location.Trim() = String.Empty) OrElse (location.Contains("<")) Then
+                If(Equals(location.Trim(), String.Empty)) OrElse location.Contains("<") Then
                     e.Value = " "
                     e.Handled = True
                     Return
                 End If
+
                 Select Case e.VariableName
                     Case "Weather"
-                        Dim conditions As New Conditions()
+                        Dim conditions As Conditions = New Conditions()
                         conditions = Weather.GetCurrentConditions(location)
-                        e.Value = String.Format("Weather for {0}: " & vbLf & "Conditions: {1}" & vbLf & "Temperature (C) :{2}" & vbLf & "Humidity: {3}" & vbLf & "Wind: {4}" & vbLf, location, conditions.Condition, conditions.TempC, conditions.Humidity, conditions.Wind)
+                        e.Value = String.Format("Weather for {0}: " & Microsoft.VisualBasic.Constants.vbLf & "Conditions: {1}" & Microsoft.VisualBasic.Constants.vbLf & "Temperature (C) :{2}" & Microsoft.VisualBasic.Constants.vbLf & "Humidity: {3}" & Microsoft.VisualBasic.Constants.vbLf & "Wind: {4}" & Microsoft.VisualBasic.Constants.vbLf, location, conditions.Condition, conditions.TempC, conditions.Humidity, conditions.Wind)
                     Case "LOCATION"
-                        If location = "DO NOT CHANGE!" Then
-                            e.Value = DocVariableValue.Current
-                        End If
+                        If Equals(location, "DO NOT CHANGE!") Then e.Value = DocVariableValue.Current
                     Case Else
                         e.Value = "LOCKED FIELD UPDATED"
                 End Select
             Else
                 e.Value = "LOCKED FIELD UPDATED"
             End If
+
             e.Handled = True
         End Sub
-        #End Region ' #calculatedocumentvariable
 
-        Private Sub btnUpdateDocVariableFields_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUpdateDocVariableFields.Click
-'            #Region "#updatedocvariablefields"
+#End Region  ' #calculatedocumentvariable
+        Private Sub btnUpdateDocVariableFields_Click(ByVal sender As Object, ByVal e As EventArgs)
+#Region "#updatedocvariablefields"
             richEditControl2.Options.Fields.UpdateLockedFields = UpdateLockedFields.DocVariableOnly
             richEditControl2.Document.Fields.Update()
-'            #End Region ' #updatedocvariablefields
+#End Region  ' #updatedocvariablefields
         End Sub
 
-        Private Sub xtraTabControl1_Selected(ByVal sender As Object, ByVal e As DevExpress.XtraTab.TabPageEventArgs) Handles xtraTabControl1.Selected
+        Private Sub xtraTabControl1_Selected(ByVal sender As Object, ByVal e As DevExpress.XtraTab.TabPageEventArgs)
             Select Case e.PageIndex
                 Case 0
                     richEdit = richEditControl1
-                    Me.btnMailMerge.Enabled = True
-                    Me.btnUpdateDocVariableFields.Enabled = False
+                    btnMailMerge.Enabled = True
+                    btnUpdateDocVariableFields.Enabled = False
                 Case 1
                     richEdit = richEditControl2
-                    Me.btnMailMerge.Enabled = False
-                    Me.btnUpdateDocVariableFields.Enabled = True
+                    btnMailMerge.Enabled = False
+                    btnUpdateDocVariableFields.Enabled = True
             End Select
         End Sub
 
-        Private Sub btn_ShowCodes_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btn_ShowCodes.CheckedChanged
+        Private Sub btn_ShowCodes_Click(ByVal sender As Object, ByVal e As EventArgs)
             Dim doc As Document = richEdit.Document
             Dim showCodes As Boolean = btn_ShowCodes.Checked
             doc.BeginUpdate()
             For Each f As Field In doc.Fields
                 f.ShowCodes = showCodes
-            Next f
+            Next
+
             doc.EndUpdate()
         End Sub
 
-        Private Sub btn_ShowHiddenText_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles btn_ShowHiddenText.CheckedChanged
+        Private Sub btn_ShowHiddenText_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
             richEdit.Options.FormattingMarkVisibility.HiddenText = If(btn_ShowHiddenText.Checked, RichEditFormattingMarkVisibility.Visible, RichEditFormattingMarkVisibility.Hidden)
         End Sub
-
     End Class
 End Namespace

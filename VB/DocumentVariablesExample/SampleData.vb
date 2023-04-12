@@ -1,9 +1,7 @@
-﻿Imports System
-Imports System.Collections.Generic
-Imports System.Text
 Imports System.Collections
 
 Namespace DocumentVariablesExample
+
     Friend Class SampleData
         Inherits ArrayList
 
@@ -17,16 +15,20 @@ Namespace DocumentVariablesExample
     End Class
 
     Public Class AddresseeRecord
-        Public Property Name() As String
-        Public Property Company() As String
-        Public Property Address() As String
-        Public Property City() As String
+
+        Public Property Name As String
+
+        Public Property Company As String
+
+        Public Property Address As String
+
+        Public Property City As String
 
         Public Sub New(ByVal _Name As String, ByVal _Company As String, ByVal _Address As String, ByVal _City As String)
-            Me.Name = _Name
-            Me.Company = _Company
-            Me.Address = _Address
-            Me.City = _City
+            Name = _Name
+            Company = _Company
+            Address = _Address
+            City = _City
         End Sub
     End Class
 End Namespace
