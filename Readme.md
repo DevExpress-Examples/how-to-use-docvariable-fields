@@ -24,5 +24,5 @@ The **MyProgressIndicatorService** class is implemented and registered as a serv
 ## Documentation
 
 * [DOCVARIABLE](https://docs.devexpress.com/OfficeFileAPI/15291/word-processing-document-api/fields/field-codes/docvariable)
-* [Document.CalculateDocVariable](hhttps://docs.devexpress.com/OfficeFileAPI/DevExpress.XtraRichEdit.API.Native.Document.CalculateDocumentVariable)
+* [Document.CalculateDocVariable](https://docs.devexpress.com/OfficeFileAPI/DevExpress.XtraRichEdit.API.Native.Document.CalculateDocumentVariable)
 * [How to: Insert Dynamic Content](https://docs.devexpress.com/OfficeFileAPI/401197/word-processing-document-api/examples/text/how-to-insert-dynamic-content)
