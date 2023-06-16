@@ -5,12 +5,12 @@
 <!-- default badges end -->
 # How to Use Document Variable (DOCVARIABLE) Fields to Insert Dynamic Content
 
-The following examples illustrates how to use the [DOCVARIABLE](https://docs.devexpress.com/OfficeFileAPI/15291/word-processing-document-api/fields/field-codes/docvariable) field and the [Document.CalculateDocVariable](hhttps://docs.devexpress.com/OfficeFileAPI/DevExpress.XtraRichEdit.API.Native.Document.CalculateDocumentVariable) event to insert dynamic content in a document.
+The following example illustrates how to use the [DOCVARIABLE](https://docs.devexpress.com/OfficeFileAPI/15291/word-processing-document-api/fields/field-codes/docvariable) field and the [Document.CalculateDocVariable](https://docs.devexpress.com/OfficeFileAPI/DevExpress.XtraRichEdit.API.Native.Document.CalculateDocumentVariable) event to insert dynamic content in a document.
 
 In this example, a variable name specified in the DOCVARIABLE indicates a choice between location and weather, while the location itself is specified by the field argument.
 
 > **Note:**
-> We do not provide code to retrieve weather information. You can implement a custom weather information provider.
+> We do not provide a code sample to retrieve weather information. You can implement a custom weather information provider.
 
 The [MailMergeRecordStarted](https://docs.devexpress.com/WindowsForms/DevExpress.XtraRichEdit.RichEditControl.MailMergeRecordStarted) event is handled to insert a hidden document's creation date.
 
